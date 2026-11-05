@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  color: #334155;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- scroll reveal ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal-left { transform: translateX(-34px); }
+.reveal-right { transform: translateX(34px); }
+.reveal-zoom { transform: scale(.94); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- ambient motion ---------- */
+@keyframes float-y { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-float-slow { animation: float-y 8s ease-in-out 1.5s infinite; }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.animate-spin-slow { animation: spin-slow 26s linear infinite; }
+
+@keyframes wordin { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.animate-wordin { animation: wordin .5s ease both; }
+
+@keyframes pan { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.bg-pan { background-size: 180% 180%; animation: pan 16s ease infinite; }
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-33.3333%); } }
+.marquee { display: flex; width: max-content; animation: marquee 34s linear infinite; }
+.marquee-wrap:hover .marquee { animation-play-state: paused; }
+
+/* ---------- chart art ---------- */
+@keyframes rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.bar { transform-box: fill-box; transform-origin: bottom; animation: rise .9s cubic-bezier(.2,.8,.2,1) backwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.2s ease-out .9s forwards; }
+@keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.dot { transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.2,.8,.2,1) backwards; }
+.art-anim:not(.play) .bar { animation: none; transform: scaleY(0); }
+.art-anim:not(.play) .draw { animation: none; }
+.art-anim:not(.play) .dot { animation: none; opacity: 0; }
+
+/* ---------- buttons ---------- */
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+}
+@keyframes shine { to { transform: translateX(220%) skewX(-20deg); } }
+.btn-shine:hover::after { animation: shine .8s ease; }
+
+/* ---------- process line ---------- */
+.line-grow { transform-origin: left; transform: scaleX(0); transition: transform 1.8s cubic-bezier(.2,.7,.2,1) .3s; }
+.reveal.in .line-grow { transform: scaleX(1); }
+
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .animate-float, .animate-float-slow, .animate-spin-slow, .bg-pan, .marquee { animation: none; }
+  .bar, .dot { animation: none; }
+  .draw { animation: none; stroke-dashoffset: 0; }
+  .line-grow { transform: none; transition: none; }
+}
